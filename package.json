@@ -1,0 +1,25 @@
+{
+  "name": "commsult-backend",
+  "version": "1.0.0",
+  "description": "Backend for movie recommendation site",
+  "homepage": "https://github.com/ghjknehbor/commsult-backend#readme",
+  "bugs": {
+    "url": "https://github.com/ghjknehbor/commsult-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghjknehbor/commsult-backend.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "mongoose": "^8.14.1"
+  }
+}
