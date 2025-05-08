@@ -9,7 +9,7 @@ const movieSchema = new Schema({
 })
 
 const ratingSchema = new Schema({
-    movie_id: ObjectId,
+    movie_id: mongoose.SchemaTypes.ObjectId,
     name: String,
     rating: Number
 })
