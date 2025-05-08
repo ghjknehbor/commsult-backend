@@ -105,12 +105,6 @@ async function autocomplete(req, res) {
             },
             {
                 $limit: 5
-            },
-            {
-                $project: {
-                    _id: 1,
-                    title: 1
-                }
             }
         ]);
         res.json(results);
