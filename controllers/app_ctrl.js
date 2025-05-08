@@ -2,8 +2,8 @@ const repo = require('../repository/app_repo')
 const express = require('express')
 
 /**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
+ * @param {express.Request} req 
+ * @param {express.Response} res 
  */
 
 function getMovies(req, res) {
@@ -24,5 +24,25 @@ function getMovie(req, res) {
     })
     .catch(error => {
         return error
+    })
+}
+
+function addMovie(req, res) {
+    var newData = req.body
+    repo.addMovie(newData)
+    .then(result => {
+        res.status(201).json(result)
+    }).catch(() => {
+        res.status(500).json({ message: "internal server error" })
+    })
+}
+
+function delMovie(req, res) {
+    var id = req.body.id
+    repo.delMovie(id)
+    .then(() => {
+        res.status(201).json({ message: `removed movie ${id}` })
+    }).catch(() => {
+        res.status(500).json({ message: "internal server error" })
     })
 }
