@@ -4,7 +4,8 @@ const movieSchema = new mongoose.Schema({
     title: String,
     director: String,
     date:{ type: Date, default: Date.now },
-    rating: Number
+    rating: Number,
+    thumb: String
 })
 
 const ratingSchema = new mongoose.Schema({

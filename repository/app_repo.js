@@ -77,3 +77,5 @@ function deleteRating(id) {
         return error
     })
 }
+
+module.exports = { findMovies, findMovie, addMovie, delMovie, findRatings, createRating, deleteRating }
