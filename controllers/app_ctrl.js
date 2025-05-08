@@ -46,3 +46,33 @@ function delMovie(req, res) {
         res.status(500).json({ message: "internal server error" })
     })
 }
+
+function getRates(req, res) {
+    var id = req.body.id
+    repo.findRatings(id)
+    .then((results) => {
+        res.status(200).json(results)
+    })
+    .catch(() => {
+        res.status(500).json({ message: "internal server error" })
+    })
+}
+
+function addRate(req, res) {
+    var newData = req.body
+    repo.addRating(newData)
+    .then()
+}
+
+function delRate(req, res) {
+    var id = req.body.id
+    repo.deleteRating(id)
+    .then(() => {
+        res.status(200).json({ message: `removed rating ${id}` })
+    })
+    .catch(() => {
+        res.status(500).json({ message: "internal server error" })
+    })
+}
+
+module.exports = { getMovies, getMovie, addMovie, delMovie, getRates, addRate, delRate }
