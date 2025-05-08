@@ -1,17 +1,19 @@
-import * as mongoose from 'mongoose'
-const { Schema } = mongoose
+const mongoose = require('mongoose')
 
-const movieSchema = new Schema({
+const movieSchema = new mongoose.Schema({
     title: String,
     director: String,
     date:{ type: Date, default: Date.now },
     rating: Number
 })
 
-const ratingSchema = new Schema({
+const ratingSchema = new mongoose.Schema({
     movie_id: mongoose.SchemaTypes.ObjectId,
     name: String,
     rating: Number
 })
 
-export { movieSchema, ratingSchema }
+const Movie = mongoose.model('Movie', movieSchema)
+const Rating = mongoose.model('Rating', ratingSchema)
+
+module.exports = { Movie, Rating }
