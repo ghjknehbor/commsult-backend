@@ -32,7 +32,8 @@ async function addMovie(newMovie) {
 
     try {
         var movies = new Movie(newMovie)
-        await movies.save()
+        const savedMovie = await movies.save()
+        return savedMovie
     } catch (error) {
         console.error(`Error adding movie: ${error}`)
         return error

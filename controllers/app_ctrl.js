@@ -1,5 +1,6 @@
 const repo = require('../repository/app_repo')
 const express = require('express')
+const { Movie } = require('../models/app_models')
 
 /**
  * @param {express.Request} req 
@@ -7,23 +8,24 @@ const express = require('express')
  */
 
 function getMovies(req, res) {
-    repo.findMovies()
-    .then(movies => {
-        res.status(200).json(movies)
+    console.log('getting movies')
+    repo.findMovies().then(results => {
+        res.status(200).json(results)
     })
-    .catch(error => {
-        res.status(500).json(error)
+    .catch(() => {
+        res.status(500).json({ message: "internal server error" })
     })
 }
 
 function getMovie(req, res) {
-    id = req.body.id
+    const id = req.params.id
+    console.log(`id as of url params: ${id}`)
     repo.findMovie(id)
-    .then(result => {
-        return result
+    .then(results => {
+        res.status(200).json(results)
     })
-    .catch(error => {
-        return error
+    .catch(() => {
+        res.status(500).json({ message: "internal server error" })
     })
 }
 
@@ -61,7 +63,12 @@ function getRates(req, res) {
 function addRate(req, res) {
     var newData = req.body
     repo.addRating(newData)
-    .then()
+    .then(results => {
+        res.status(201).json(results)
+    })
+    .catch(() => {
+        res.status(500).json({ message: "internal server error" })
+    })
 }
 
 function delRate(req, res) {
@@ -75,4 +82,43 @@ function delRate(req, res) {
     })
 }
 
-module.exports = { getMovies, getMovie, addMovie, delMovie, getRates, addRate, delRate }
+async function autocomplete(req, res) {
+    try {
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ error: 'Missing search query' });
+        }
+        const results = await Movie.aggregate([
+            {
+                $search: {
+                    index: 'titles',
+                    autocomplete: {
+                        query: query,
+                        path: 'title',
+                        fuzzy: {
+                            maxEdits: 1,
+                            prefixLength: 0,
+                            maxExpansions: 50
+                        }
+                    }
+                }
+            },
+            {
+                $limit: 5
+            },
+            {
+                $project: {
+                    _id: 1,
+                    title: 1
+                }
+            }
+        ]);
+        res.json(results);
+    } catch (error) {
+        console.error('Error during autocomplete search:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
+module.exports = { getMovies, getMovie, addMovie, delMovie, getRates, addRate, delRate, autocomplete }

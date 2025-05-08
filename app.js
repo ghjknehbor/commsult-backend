@@ -6,16 +6,18 @@ async function startserver() {
 
     const app = express()
 
-    app.use(express.json)
+    app.use(express.json())
     app.use(
         express.urlencoded({
             extended: true
         })
     )
 
-    var testroutes = require('./user_routes')
+    var user_routes = require('./routes/user_routes')
+    var admin_routes = require('./routes/admin_routes')
 
-    app.use('/user', testroutes)
+    app.use('/api/user', user_routes)
+    app.use('/api/admin', admin_routes)
 
     try {
         await mongoose.connect(process.env.MONGO_ENV, {
